@@ -1,100 +1,61 @@
 //Gladiator Robots Game
+//Game States
 
-//player enters name
+
 var playerName = window.prompt("What is your robot's name?");
-
-/*
-//starting player health and attack levels
 var playerHealth = 100;
-var playerAttack=10;
+var playerAttack = 10;
+var playerMoney = 10;
 
-console.log(`playerName: ${playerName}, playerAttack: ${playerAttack}, playerHealth: ${playerHealth}`);
+// You can also log multiple values at once like this
+console.log(`playername: ${playerName},playerAttack: ${playerAttack}, playerHealth${playerHealth}`);
 
-
-var enemyName = 'Roborto';
+var enemyName = "Roborto";
 var enemyHealth = 50;
 var enemyAttack = 12;
-*/
 
-//player robot setup
-const player = {
-    name: playerName,
-    health: 100,
-    attack: 10,
-    money: 10
-}
-
-//enemy robot setup
-const enemy = {
-    name: 'Roborto',
-    health: 50,
-    attack: 12
-}
-
-console.log(`playerName: ${player.name}, playerAttack: ${player.attack}, playerHealth: ${player.health}`);
-
-
-//function to check that healthlevel is above zero. Requires robots to be objects
-
-var checkHealth = (robot) => {
-    if (robot.health <= 0) {
-        window.alert(`${robot.name} has died!`);
-    } else {
-        window.alert(`${robot.name} still has ${robot.health} health left.`);
-    }
-}
-
-var skipTurn = () => {
-    player.money -= 2;
-    window.alert(`${player.name} has skipped. ${player.name}'s money is now ${player.money}.`);
-}
-var areYouSure = () => {
-    let confirmSkip = window.confirm("Are you sure you want to skip? You'll lose 2 money");
-    // sure = sure.toLowerCase();
-    if (!confirmSkip) {
-        window.alert('You have chosen to fight!');
-        fight();
-    } else {
-        skipTurn();
-    }
-}
-
-//does the player want to fight or skip. If they skip they will lose 2 money
-var toFight = () => {
-    var promptFight = window.prompt('Would you like to FIGHT or SKIP this round?');
+var fight = function () {
+    //alert users they are starting the round
+    window.alert("Welcome to Robot Gladiators!");
+    //does player want to skip or fight
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle?');
     promptFight = promptFight.toLowerCase();
-    if (promptFight === 'fight') {
-        fight();
+    //player skips
+    if (promptFight === 'skip') {
+        //confirm skip
+        let confirmSkip = window.confirm("Are you sure you want to skip? You'll lose 2 money");
+        if (confirmSkip) {
+            playerMoney -= 2;
+            window.alert(`${playerName} has skipped. ${playerName}'s money is now ${playerMoney}.`);
+        } else {
+            fight();
+        }
     }
-    else if (promptFight === 'skip') {
-        areYouSure();
-    } else {
+    else if (promptFight === 'fight') {
+        //Subtract the value of `playerAttack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
+        enemyHealth -= playerAttack;
+        // Log a resulting message to the console so we know that it worked.
+        console.log(`${playerName} attacked ${enemyName}. ${enemyName} now has ${enemyHealth} health remainging.`);
+        //check enemy health
+        if (enemyHealth <= 0) {
+            window.alert(`${enemyName} has died.`);
+        } else {
+            window.alert(`${enemyName} still has ${enemyHealth} health left.`);
+        };
+        // Subtract the value of `enemyAttack` from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
+        playerHealth -= enemyAttack;
+        // Log a resulting message to the console so we know that it worked.
+        console.log(`${enemyName} attacked ${playerName}. ${playerName} now has ${playerHealth} health remaining.`);
+        //check player health
+        if (playerHealth <= 0) {
+            window.alert(`${playerName} has died.`);
+        } else {
+            window.alert(`${playerName} still has ${playerHealth} health left.`);
+        }
+    }
+    else {
         window.alert('Invalid Entry');
-        toFight();
     }
-}
-
-//fight function
-var fight = () => {
-    //subtract playerAttack value from enemyAttack and store result in enemyAttack
-    enemy.health -= player.attack;
-    //log message to confirm enemyhealth updated
-    console.log(`${player.name} attacked ${enemy.name}. ${enemy.name} now has ${enemy.health} health remainging.`);
-    checkHealth(enemy);
-    //subtract enemyHealth from playerHealth and store result in playerHealth
-    player.health -= enemy.attack;
-    //log results to ensure playerHealth updated
-    console.log(`${enemy.name} attacked ${player.name}. ${player.name} now has ${player.health} health remaining.`);
-    checkHealth(player);
-}
-
-
-//play the game
-var playGame = () => {
-    //Alert users they are starting the round
-    window.alert('Welcome to Robot Gladiators!');
-    //does player want to fight or skip
-    toFight();
 };
 
-playGame();
+fight();
