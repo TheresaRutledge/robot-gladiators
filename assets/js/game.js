@@ -115,10 +115,9 @@ var endGame = () => {
     //alerts players stats
     window.alert(`Wins: ${playerWins} Losses: ${playerLosses}`)
     //play again?
-    var playAgain = window.prompt('Do you want to play again?');
-    playAgain= playAgain.toLocaleLowerCase();
+    var playAgain = window.confirm('Do you want to play again?');
     //restart game
-    if(playAgain === 'yes'){
+    if(playAgain){
         // i = 0;
         playerHealth = 100;
         enemyHealth=50;
