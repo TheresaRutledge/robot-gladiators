@@ -130,16 +130,16 @@ var endGame = () => {
 var shop = () => {
     console.log('entered the shop');
     //show player money and shop options: refill health, upgrade attack, leave shop
-    var shopAction = window.prompt(`You have ${player.money} dollars. Health is: ${player.health}. Attack is: ${player.health}. Do you want to REFILL health for 7, UPGRADE attack for 7 or LEAVE the shop?`);
-    shopAction = shopAction.toLowerCase();
+    var shopAction = window.prompt(`You have ${player.money} dollars. Health is: ${player.health}. Attack is: ${player.health}. Do you want to 1. REFILL health for 7, 2. UPGRADE attack for 7 or 3. LEAVE the shop?`);
+    shopAction = parseInt(shopAction);
     switch (shopAction) {
-        case 'refill':
+        case 1:
             player.refillHealth();
             break;
-        case 'upgrade':
+        case 2:
             player.upgradeAttack();
             break;
-        case 'leave':
+        case 3:
             window.alert('Leaving store.');
             break;
         default:
