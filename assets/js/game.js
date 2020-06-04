@@ -6,35 +6,43 @@
 // lose - player robot's health drops to zero or lower
 
 
+//does player want to fight or skip
+const fightOrSkip = () => {
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle?');
+    promptFight = promptFight.toLowerCase();
+    switch (promptFight) {
+        case 'skip':
+            if (player.money < 10) {
+                alert('Not enough money to skip. You must fight');
+                return false;
+            } else {
+                let confirm = window.confirm(`Are you sure you want to skip? You'll lose 10 dollars.`);
+                if (confirm) {
+                    player.money -= 10;
+                    window.alert(`${player.name} has skipped. ${player.name}'s money is now ${player.money}.`);
+                    console.log(`player money: ${player.money}`);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            break;
+        case 'fight':
+            return false;
+            break;
+        default:
+            alert('Invalid entry');
+            return fightOrSkip();
+    }
+}
+
 //Fight function - checks all players have positive health, asks if player wants to skip or fight, fight robot until player or enemy health drops below zero
 var fight = function (enemy) {
-    //check health of player and robot are above zero
+    //check health of player and robot are above zero and play until one is not
     while (enemy.health > 0 && player.health > 0) {
-        //does player want to skip or fight
-        var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle?');
-        promptFight = promptFight.toLowerCase();
-        //player skips
-        if (promptFight === 'skip' && player.money >= 10) {
-            //confirm skip
-            let confirmSkip = window.confirm("Are you sure you want to skip? You'll lose 10 money");
-            if (confirmSkip) {
-                player.money -= 10;
-                window.alert(`${player.name} has skipped. ${player.name}'s money is now ${player.money}.`);
-                console.log(`player money: ${player.money}`);
-                break;
-            }
+        if (fightOrSkip()){
+            break;
         }
-        if (promptFight === 'skip' && player.money < 10) {
-            window.alert('Not enough money to skip');
-            //does player want to shop
-            var goToShop = window.confirm('Do you want to shop?');
-            //if yes, call shop function
-            if (goToShop) {
-                shop();
-            }
-
-        }
-
         //Subtract the value of `player.attack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
         var damage = randomNumber(player.attack - 3, player.attack);
         enemy.health = Math.max(0, enemy.health - damage);
@@ -78,7 +86,7 @@ const playGame = () => {
             window.alert("Welcome to Robot Gladiators! Round: " + (i + 1));
             // reset enemy health to 50
             enemyObj.health = randomNumber(40, 60);
-            //call fight function with enemy robot
+            //does player want to fight or skip
             fight(enemyObj);
             if (i < enemies.length && player.health > 0) {
                 var goToShop = window.confirm('Do you want to shop?');
@@ -100,7 +108,7 @@ var endGame = () => {
         window.alert('Congratulations You Won!')
         player.wins++;
     }
-    player health is 0
+    // player health is 0
     if (player.health <= 0) {
         window.alert('You lost your robot in battle. Game Over')
         player.losses++;
@@ -113,7 +121,7 @@ var endGame = () => {
     if (playAgain) {
         player.reset();
         playGame();
-    //thanks for playing
+        //thanks for playing
     } else {
         window.alert('Thanks for playing!');
     }
@@ -141,8 +149,19 @@ var shop = () => {
     }
 }
 
+//asks for player robot's name until valid entry in inputted
+const getPlayerName = () => {
+    name = prompt("What is your robot's name?");
+    while (!name) {
+        getPlayerName();
+    }
+    console.log(`Your robots name is ${name}`);
+    return name;
+}
+
+//Player Object
 var player = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
@@ -173,6 +192,7 @@ var player = {
     }
 }
 
+//Enemy Object
 var enemies = [
     {
         name: 'Roborto',
