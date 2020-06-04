@@ -127,9 +127,23 @@ var endGame = () => {
     if (player.health <= 0) {
         window.alert('You lost your robot in battle. Game Over')
         player.losses++;
+        player.money = 0;
     }
     //alerts players stats
-    window.alert(`Wins: ${player.wins} Losses: ${player.losses}`)
+    window.alert(`Wins: ${player.wins} Losses: ${player.losses} Score: ${player.money}`);
+    let highscore = localStorage.getItem('highscore');
+    if(!highscore){
+        highscore = 0;
+    }
+    parseInt(highscore);
+    if(highscore>=player.money){
+        alert(`You did not beat high score. Record is ${highscore}.`)
+    } else if (highscore < player.money){
+        alert(`You beat the high score. New high score is ${player.money}.`);
+        localStorage.setItem('highscore',player.money);
+        localStorage.setItem('highscoreName',player.name);
+    }
+
     //play again?
     var playAgain = window.confirm('Do you want to play again?');
     //restart game
